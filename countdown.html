@@ -1,0 +1,67 @@
+<style>
+  body {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+</style>
+<div
+  style="
+    width: 50%;
+    margin: auto;
+    height: fit-content;
+    margin: 15px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  <div style="display: flex;">
+    <input
+      type="number"
+      placeholder="hours"
+      min="1"
+      style="width: 70%; height: 60px; font-size: 2rem;"
+      id="hours"
+    />
+    <button
+      style="width: 30%; height: 60px; font-size: 2rem;"
+      onclick="startTimer()"
+    >
+      Start
+    </button>
+  </div>
+  <div style="width: 100%; height: 60px; margin: 15px auto;">
+    <p style="text-align: center; font-size: 5rem; margin: 0;" id="timer">
+      02 : 22 : 34
+    </p>
+  </div>
+</div>
+<script>
+  startTimer = () => {
+    let relativeHours = document.getElementById("hours").value;
+    if (!Number(relativeHours) || Number(relativeHours) < 0) return;
+    else {
+      relativeHours = Date.now() + relativeHours * 60 * 60 * 1000;
+      let countdown = setInterval(() => {
+        let difference = relativeHours - Date.now();
+        let hours = Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        let timerString = `${hours} hrs : ${minutes} mins : ${seconds} secs`;
+        document.getElementById("timer").innerText = timerString;
+
+        // Checking end of timer
+        if (difference < 0) {
+          document.getElementById("timer").innerText = "Time over!";
+          clearInterval(countdown);
+        }
+      }, 1000);
+    }
+  };
+</script>
